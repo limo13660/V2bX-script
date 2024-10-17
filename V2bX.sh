@@ -689,18 +689,6 @@ EOF
 {
 	"domainStrategy": "IPIfNonMatch",
 	"rules": [{
-			"remarks": "阻断局域网域名",
-			"type": "field",
-			"outboundTag": "block",
-			"domain": ["geosite:private"]
-		},
-		{
-			"remarks": "阻断局域网IP",
-			"type": "field",
-			"outboundTag": "block",
-			"ip": ["geoip:private"]
-		},
-		{
 			"remarks": "阻断网站",
 			"type": "field",
 			"outboundTag": "block",
@@ -738,44 +726,6 @@ EOF
 				"regexp:(flows|miaoko).(pages).(dev)"
 			]
 		}, {
-			"remarks": "绕过中国域名",
-			"outboundTag": "direct",
-			"domain": [
-				"domain:dns.alidns.com",
-				"domain:doh.pub",
-				"domain:dot.pub",
-				"domain:doh.360.cn",
-				"domain:dot.360.cn",
-				"geosite:cn",
-				"geosite:geolocation-cn"
-			]
-		}, {
-			"remarks": "绕过中国IP",
-			"type": "field",
-			"outboundTag": "direct",
-			"ip": [
-				"223.5.5.5/32",
-				"223.6.6.6/32",
-				"2400:3200::1/128",
-				"2400:3200:baba::1/128",
-				"119.29.29.29/32",
-				"1.12.12.12/32",
-				"120.53.53.53/32",
-				"2402:4e00::/128",
-				"2402:4e00:1::/128",
-				"180.76.76.76/32",
-				"2400:da00::6666/128",
-				"114.114.114.114/32",
-				"114.114.115.115/32",
-				"180.184.1.1/32",
-				"180.184.2.2/32",
-				"101.226.4.6/32",
-				"218.30.118.6/32",
-				"123.125.81.6/32",
-				"140.207.198.6/32",
-				"geoip:cn"
-			]
-		}, {
 			"remarks": "阻断广告",
 			"type": "field",
 			"outboundTag": "block",
@@ -799,6 +749,7 @@ EOF
 			"type": "field",
 			"outboundTag": "Direct",
 			"domain": [
+				"geosite:cn",
 				"domain:icloud.com",
 				"domain:icloud-content.com",
 				"domain:cdn-apple.com",
@@ -810,6 +761,7 @@ EOF
 			"type": "field",
 			"outboundTag": "block",
 			"ip": [
+				"geoip:cn",
 				"127.0.0.1/32",
 				"10.0.0.0/8",
 				"fc00::/7",
@@ -823,16 +775,17 @@ EOF
 			"protocol": [
 				"bittorrent"
 			]
-		}, {
-			"type": "field",
-			"outboundTag": "Proxy",
-			"network": "tcp,udp"
-		},
+		}, 
 		{
 			"remarks": "阻断指定端口",
 			"type": "field",
 			"outboundTag": "block",
 			"port": "22,23,24,25,107,194,445,465,587,992,3389,6665-6669,6679,6697,6881-6999,7000,10000-65535"
+		},
+		{
+			"type": "field",
+			"outboundTag": "Proxy",
+			"network": "tcp,udp"
 		}
 	]
 }
