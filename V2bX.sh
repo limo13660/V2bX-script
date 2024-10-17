@@ -95,7 +95,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontents.com/wyx2685/V2bX-script/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontents.com/limo13660/V2bX-script/master/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -111,7 +111,7 @@ update() {
     else
         version=$2
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/wyx2685/V2bX-script/master/install.sh) $version
+    bash <(curl -Ls https://raw.githubusercontent.com/limo13660/V2bX-script/master/install.sh) $version
     if [[ $? == 0 ]]; then
         echo -e "${green}更新完成，已自动重启 V2bX，请使用 V2bX log 查看运行日志${plain}"
         exit
@@ -265,7 +265,7 @@ install_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/V2bX -N --no-check-certificate https://raw.githubusercontent.com/wyx2685/V2bX-script/master/V2bX.sh
+    wget -O /usr/bin/V2bX -N --no-check-certificate https://raw.githubusercontent.com/limo13660/V2bX-script/master/V2bX.sh
     if [[ $? != 0 ]]; then
         echo ""
         echo -e "${red}下载脚本失败，请检查本机能否连接 Github${plain}"
@@ -686,64 +686,156 @@ EOF
     
     # 创建 route.json 文件
     cat <<EOF > /etc/V2bX/route.json
-    {
-        "domainStrategy": "AsIs",
-        "rules": [
-            {
-                "type": "field",
-                "outboundTag": "block",
-                "ip": [
-                    "geoip:private"
-                ]
-            },
-            {
-                "type": "field",
-                "outboundTag": "block",
-                "domain": [
-                    "regexp:(api|ps|sv|offnavi|newvector|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
-                    "regexp:(.+.|^)(360|so).(cn|com)",
-                    "regexp:(Subject|HELO|SMTP)",
-                    "regexp:(torrent|.torrent|peer_id=|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=)",
-                    "regexp:(^.@)(guerrillamail|guerrillamailblock|sharklasers|grr|pokemail|spam4|bccto|chacuo|027168).(info|biz|com|de|net|org|me|la)",
-                    "regexp:(.?)(xunlei|sandai|Thunder|XLLiveUD)(.)",
-                    "regexp:(..||)(dafahao|mingjinglive|botanwang|minghui|dongtaiwang|falunaz|epochtimes|ntdtv|falundafa|falungong|wujieliulan|zhengjian).(org|com|net)",
-                    "regexp:(ed2k|.torrent|peer_id=|announce|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=|magnet:|xunlei|sandai|Thunder|XLLiveUD|bt_key)",
-                    "regexp:(.+.|^)(360).(cn|com|net)",
-                    "regexp:(.*.||)(guanjia.qq.com|qqpcmgr|QQPCMGR)",
-                    "regexp:(.*.||)(rising|kingsoft|duba|xindubawukong|jinshanduba).(com|net|org)",
-                    "regexp:(.*.||)(netvigator|torproject).(com|cn|net|org)",
-                    "regexp:(..||)(visa|mycard|gash|beanfun|bank).",
-                    "regexp:(.*.||)(gov|12377|12315|talk.news.pts.org|creaders|zhuichaguoji|efcc.org|cyberpolice|aboluowang|tuidang|epochtimes|zhengjian|110.qq|mingjingnews|inmediahk|xinsheng|breakgfw|chengmingmag|jinpianwang|qi-gong|mhradio|edoors|renminbao|soundofhope|xizang-zhiye|bannedbook|ntdtv|12321|secretchina|dajiyuan|boxun|chinadigitaltimes|dwnews|huaglad|oneplusnews|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
-                    "regexp:(.*.||)(miaozhen|cnzz|talkingdata|umeng).(cn|com)",
-                    "regexp:(.*.||)(mycard).(com|tw)",
-                    "regexp:(.*.||)(gash).(com|tw)",
-                    "regexp:(.bank.)",
-                    "regexp:(.*.||)(pincong).(rocks)",
-                    "regexp:(.*.||)(taobao).(com)",
-                    "regexp:(.*.||)(laomoe|jiyou|ssss|lolicp|vv1234|0z|4321q|868123|ksweb|mm126).(com|cloud|fun|cn|gs|xyz|cc)",
-                    "regexp:(flows|miaoko).(pages).(dev)"
-                ]
-            },
-            {
-                "type": "field",
-                "outboundTag": "block",
-                "ip": [
-                    "127.0.0.1/32",
-                    "10.0.0.0/8",
-                    "fc00::/7",
-                    "fe80::/10",
-                    "172.16.0.0/12"
-                ]
-            },
-            {
-                "type": "field",
-                "outboundTag": "block",
-                "protocol": [
-                    "bittorrent"
-                ]
-            }
-        ]
-    }
+{
+	"domainStrategy": "IPIfNonMatch",
+	"rules": [{
+			"remarks": "阻断局域网域名",
+			"type": "field",
+			"outboundTag": "block",
+			"domain": ["geosite:private"]
+		},
+		{
+			"remarks": "阻断局域网IP",
+			"type": "field",
+			"outboundTag": "block",
+			"ip": ["geoip:private"]
+		},
+		{
+			"remarks": "阻断网站",
+			"type": "field",
+			"outboundTag": "block",
+			"domain": [
+				"regexp:(api|ps|sv|offnavi|newvector|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
+				"regexp:(Subject|HELO|SMTP)",
+				"regexp:(.+.|^)(360|so).(cn|com)",
+				"regexp:(.+.|^)(baidu).(cn|com)",
+				"regexp:(torrent|.torrent|peer_id=|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=)",
+				"regexp:(^.@)(guerrillamail|guerrillamailblock|sharklasers|grr|pokemail|spam4|bccto|chacuo|027168).(info|biz|com|de|net|org|me|la)",
+				"regexp:(.?)(xunlei|sandai|Thunder|XLLiveUD)(.)",
+				"regexp:(..||)(dafahao|mingjinglive|botanwang|minghui|dongtaiwang|falunaz|epochtimes|ntdtv|falundafa|falungong|wujieliulan|zhengjian).(org|com|net)",
+				"regexp:(ed2k|.torrent|peer_id=|announce|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=|magnet:|xunlei|sandai|Thunder|XLLiveUD|bt_key)",
+				"regexp:(.*.||)(360|so|qihoo|360safe|qhimg|360totalsecurity|yunpan).(cn|com)",
+				"regexp:(.*.||)(360).(cn|com|net)",
+				"regexp:(.*.||)(guanjia.qq.com|qqpcmgr|QQPCMGR)",
+				"regexp:(.*.||)(rising|kingsoft|duba|xindubawukong|jinshanduba).(com|net|org)",
+				"regexp:(.*.||)(netvigator|torproject).(com|cn|net|org)",
+				"regexp:(..||)(visa|mycard|gash|beanfun|bank).",
+				"regexp:(.*.||)(miaozhen|cnzz|talkingdata|umeng).(cn|com)",
+				"regexp:(.*.||)(mycard).(com|tw)",
+				"regexp:(.*.||)(gash).(com|tw)",
+				"regexp:(.bank.)",
+				"regexp:(.*.||)(pincong).(rocks)",
+				"regexp:(.*.||)(taobao).(com)",
+				"regexp:(.*.||)(gov|12377|12315|talk.news.pts.org|creaders|zhuichaguoji|efcc.org|cyberpolice|aboluowang|tuidang|epochtimes|zhengjian|110.qq|mingjingnews|inmediahk|xinsheng|breakgfw|chengmingmag|jinpianwang|qi-gong|mhradio|edoors|renminbao|soundofhope|xizang-zhiye|bannedbook|ntdtv|12321|secretchina|dajiyuan|boxun|chinadigitaltimes|dwnews|huaglad|oneplusnews|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
+				"regexp:(.*.||)(dafahao|mingjinglive|chinaaid|botanwang|xinsheng|rfi|breakgfw|chengmingmag|jinpianwang|xizang-zhiye|qi-gong|voachinese|mhradio|rfa|edoors|renminbao|soundofhope|zhengjian|minghui|dongtaiwang|epochtimes|ntdtv|falundafa|wujieliulan|aboluowang|bannedbook|secretchina|dajiyuan|boxun|chinadigitaltimes|huaglad|dwnews|creaders|oneplusnews|talk.news.pts.org|zhuichaguoji|efcc.org|cyberpolice|tuidang|nytimes|falunaz|mingjingnews|inmediahk|falungong|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
+				"regexp:(api|ps|sv|off­navi|newvec­tor|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
+				"regexp:(.*.||)(ris­ing|king­soft|duba|xin­dubawukong|jin­shan­duba).(com|net|org)",
+				"regexp:(.*.||)(netvi­ga­tor|tor­pro­ject).(com|cn|net|org)",
+				"regexp:(.*.||)(gov|12377|12315|110.qq|12321|12388).(cn|com|net|gov.cn)",
+				"regexp:(.*.||)(weibo|douban|xiaohongshu|douyin).(cn|com|com.cn|net)",
+				"regexp:(.*.||)(metatrader4|metatrader5|mql5).(org|com|net)",
+				"regexp:(.*.||)(laomoe|jiyou|ssss|lolicp|vv1234|0z|4321q|868123|ksweb|mm126).(com|cloud|fun|cn|gs|xyz|cc)",
+				"regexp:(flows|miaoko).(pages).(dev)"
+			]
+		}, {
+			"remarks": "绕过中国域名",
+			"outboundTag": "direct",
+			"domain": [
+				"domain:dns.alidns.com",
+				"domain:doh.pub",
+				"domain:dot.pub",
+				"domain:doh.360.cn",
+				"domain:dot.360.cn",
+				"geosite:cn",
+				"geosite:geolocation-cn"
+			]
+		}, {
+			"remarks": "绕过中国IP",
+			"type": "field",
+			"outboundTag": "direct",
+			"ip": [
+				"223.5.5.5/32",
+				"223.6.6.6/32",
+				"2400:3200::1/128",
+				"2400:3200:baba::1/128",
+				"119.29.29.29/32",
+				"1.12.12.12/32",
+				"120.53.53.53/32",
+				"2402:4e00::/128",
+				"2402:4e00:1::/128",
+				"180.76.76.76/32",
+				"2400:da00::6666/128",
+				"114.114.114.114/32",
+				"114.114.115.115/32",
+				"180.184.1.1/32",
+				"180.184.2.2/32",
+				"101.226.4.6/32",
+				"218.30.118.6/32",
+				"123.125.81.6/32",
+				"140.207.198.6/32",
+				"geoip:cn"
+			]
+		}, {
+			"remarks": "阻断广告",
+			"type": "field",
+			"outboundTag": "block",
+			"domain": ["geosite:category-ads-all"]
+		}, {
+			"remarks": "代理国外常见网站",
+			"type": "field",
+			"outboundTag": "Proxy",
+			"domain": [
+				"full:www.icloud.com",
+				"domain:icloud-content.com",
+				"geosite:google",
+				"geosite:facebook",
+				"geosite:twitter",
+				"geosite:tld-!cn",
+				"geosite:telegram",
+				"geosite:geolocation-!cn"
+			]
+		}, {
+			"remarks": "直连中国IP的网站",
+			"type": "field",
+			"outboundTag": "Direct",
+			"domain": [
+				"domain:icloud.com",
+				"domain:icloud-content.com",
+				"domain:cdn-apple.com",
+				"geosite:private",
+				"geosite:category-games@cn"
+			]
+		}, {
+			"remarks": "阻断局域",
+			"type": "field",
+			"outboundTag": "block",
+			"ip": [
+				"127.0.0.1/32",
+				"10.0.0.0/8",
+				"fc00::/7",
+				"fe80::/10",
+				"172.16.0.0/12"
+			]
+		},
+		{
+			"type": "field",
+			"outboundTag": "block",
+			"protocol": [
+				"bittorrent"
+			]
+		}, {
+			"type": "field",
+			"outboundTag": "Proxy",
+			"network": "tcp,udp"
+		},
+		{
+			"remarks": "阻断指定端口",
+			"type": "field",
+			"outboundTag": "block",
+			"port": "22,23,24,25,107,194,445,465,587,992,3389,6665-6669,6679,6697,6881-6999,7000,10000-65535"
+		}
+	]
+}
 EOF
 
     # 创建 sing_origin.json 文件           
@@ -878,7 +970,7 @@ show_usage() {
 show_menu() {
     echo -e "
   ${green}V2bX 后端管理脚本，${plain}${red}不适用于docker${plain}
---- https://github.com/wyx2685/V2bX ---
+--- https://github.com/limo13660/V2bX ---
   ${green}0.${plain} 修改配置
 ————————————————
   ${green}1.${plain} 安装 V2bX
