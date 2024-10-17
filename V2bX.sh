@@ -686,172 +686,63 @@ EOF
     
     # 创建 route.json 文件
     cat <<EOF > /etc/V2bX/route.json
-{
-	"domainStrategy": "IPIfNonMatch",
-	"rules": [{
-			"remarks": "阻断网站",
-			"type": "field",
-			"outboundTag": "block",
-			"domain": [
-				"regexp:(api|ps|sv|offnavi|newvector|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
-				"regexp:(Subject|HELO|SMTP)",
-				"regexp:(.+.|^)(360|so).(cn|com)",
-				"regexp:(.+.|^)(baidu).(cn|com)",
-				"regexp:(torrent|.torrent|peer_id=|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=)",
-				"regexp:(^.@)(guerrillamail|guerrillamailblock|sharklasers|grr|pokemail|spam4|bccto|chacuo|027168).(info|biz|com|de|net|org|me|la)",
-				"regexp:(.?)(xunlei|sandai|Thunder|XLLiveUD)(.)",
-				"regexp:(..||)(dafahao|mingjinglive|botanwang|minghui|dongtaiwang|falunaz|epochtimes|ntdtv|falundafa|falungong|wujieliulan|zhengjian).(org|com|net)",
-				"regexp:(ed2k|.torrent|peer_id=|announce|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=|magnet:|xunlei|sandai|Thunder|XLLiveUD|bt_key)",
-				"regexp:(.*.||)(360|so|qihoo|360safe|qhimg|360totalsecurity|yunpan).(cn|com)",
-				"regexp:(.*.||)(360).(cn|com|net)",
-				"regexp:(.*.||)(guanjia.qq.com|qqpcmgr|QQPCMGR)",
-				"regexp:(.*.||)(rising|kingsoft|duba|xindubawukong|jinshanduba).(com|net|org)",
-				"regexp:(.*.||)(netvigator|torproject).(com|cn|net|org)",
-				"regexp:(..||)(visa|mycard|gash|beanfun|bank).",
-				"regexp:(.*.||)(miaozhen|cnzz|talkingdata|umeng).(cn|com)",
-				"regexp:(.*.||)(mycard).(com|tw)",
-				"regexp:(.*.||)(gash).(com|tw)",
-				"regexp:(.bank.)",
-				"regexp:(.*.||)(pincong).(rocks)",
-				"regexp:(.*.||)(taobao).(com)",
-				"regexp:(.*.||)(gov|12377|12315|talk.news.pts.org|creaders|zhuichaguoji|efcc.org|cyberpolice|aboluowang|tuidang|epochtimes|zhengjian|110.qq|mingjingnews|inmediahk|xinsheng|breakgfw|chengmingmag|jinpianwang|qi-gong|mhradio|edoors|renminbao|soundofhope|xizang-zhiye|bannedbook|ntdtv|12321|secretchina|dajiyuan|boxun|chinadigitaltimes|dwnews|huaglad|oneplusnews|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
-				"regexp:(.*.||)(dafahao|mingjinglive|chinaaid|botanwang|xinsheng|rfi|breakgfw|chengmingmag|jinpianwang|xizang-zhiye|qi-gong|voachinese|mhradio|rfa|edoors|renminbao|soundofhope|zhengjian|minghui|dongtaiwang|epochtimes|ntdtv|falundafa|wujieliulan|aboluowang|bannedbook|secretchina|dajiyuan|boxun|chinadigitaltimes|huaglad|dwnews|creaders|oneplusnews|talk.news.pts.org|zhuichaguoji|efcc.org|cyberpolice|tuidang|nytimes|falunaz|mingjingnews|inmediahk|falungong|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
-				"regexp:(api|ps|sv|off­navi|newvec­tor|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
-				"regexp:(.*.||)(ris­ing|king­soft|duba|xin­dubawukong|jin­shan­duba).(com|net|org)",
-				"regexp:(.*.||)(netvi­ga­tor|tor­pro­ject).(com|cn|net|org)",
-				"regexp:(.*.||)(gov|12377|12315|110.qq|12321|12388).(cn|com|net|gov.cn)",
-				"regexp:(.*.||)(weibo|douban|xiaohongshu|douyin).(cn|com|com.cn|net)",
-				"regexp:(.*.||)(metatrader4|metatrader5|mql5).(org|com|net)",
-				"regexp:(.*.||)(laomoe|jiyou|ssss|lolicp|vv1234|0z|4321q|868123|ksweb|mm126).(com|cloud|fun|cn|gs|xyz|cc)",
-				"regexp:(flows|miaoko).(pages).(dev)"
-			]
-		}, {
-			"remarks": "阻断广告",
-			"type": "field",
-			"outboundTag": "block",
-			"domain": ["geosite:category-ads-all"]
-		}, {
-			"remarks": "代理国外常见网站",
-			"type": "field",
-			"outboundTag": "Proxy",
-			"domain": [
-				"full:www.icloud.com",
-				"domain:icloud-content.com",
-				"geosite:google",
-				"geosite:facebook",
-				"geosite:twitter",
-				"geosite:tld-!cn",
-				"geosite:telegram",
-				"geosite:geolocation-!cn"
-			]
-		}, {
-			"remarks": "直连中国IP的网站",
-			"type": "field",
-			"outboundTag": "Direct",
-			"domain": [
-				"geosite:cn",
-				"domain:icloud.com",
-				"domain:icloud-content.com",
-				"domain:cdn-apple.com",
-				"geosite:private",
-				"geosite:category-games@cn"
-			]
-		}, {
-			"remarks": "阻断局域",
-			"type": "field",
-			"outboundTag": "block",
-			"ip": [
-				"geoip:cn",
-				"127.0.0.1/32",
-				"10.0.0.0/8",
-				"fc00::/7",
-				"fe80::/10",
-				"172.16.0.0/12"
-			]
-		},
-		{
-			"type": "field",
-			"outboundTag": "block",
-			"protocol": [
-				"bittorrent"
-			]
-		}, 
-		{
-			"remarks": "阻断指定端口",
-			"type": "field",
-			"outboundTag": "block",
-			"port": "22,23,24,25,107,194,445,465,587,992,3389,6665-6669,6679,6697,6881-6999,7000,10000-65535"
-		},
-		{
-			"type": "field",
-			"outboundTag": "Proxy",
-			"network": "tcp,udp"
-		}
-	]
-}
-EOF
-
-    # 创建 sing_origin.json 文件           
-    cat <<EOF > /etc/V2bX/sing_origin.json
-{
-  "outbounds": [
     {
-      "tag": "direct",
-      "type": "direct",
-      "domain_strategy": "prefer_ipv4"
-    },
-    {
-      "type": "block",
-      "tag": "block"
-    }
-  ],
-  "route": {
-    "rules": [
-      {
-        "ip_is_private": true,
-        "outbound": "block"
-      },
-      {
-        "domain_regex": [
-            "(api|ps|sv|offnavi|newvector|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
-            "(.+.|^)(360|so).(cn|com)",
-            "(Subject|HELO|SMTP)",
-            "(torrent|.torrent|peer_id=|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=)",
-            "(^.@)(guerrillamail|guerrillamailblock|sharklasers|grr|pokemail|spam4|bccto|chacuo|027168).(info|biz|com|de|net|org|me|la)",
-            "(.?)(xunlei|sandai|Thunder|XLLiveUD)(.)",
-            "(..||)(dafahao|mingjinglive|botanwang|minghui|dongtaiwang|falunaz|epochtimes|ntdtv|falundafa|falungong|wujieliulan|zhengjian).(org|com|net)",
-            "(ed2k|.torrent|peer_id=|announce|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=|magnet:|xunlei|sandai|Thunder|XLLiveUD|bt_key)",
-            "(.+.|^)(360).(cn|com|net)",
-            "(.*.||)(guanjia.qq.com|qqpcmgr|QQPCMGR)",
-            "(.*.||)(rising|kingsoft|duba|xindubawukong|jinshanduba).(com|net|org)",
-            "(.*.||)(netvigator|torproject).(com|cn|net|org)",
-            "(..||)(visa|mycard|gash|beanfun|bank).",
-            "(.*.||)(gov|12377|12315|talk.news.pts.org|creaders|zhuichaguoji|efcc.org|cyberpolice|aboluowang|tuidang|epochtimes|zhengjian|110.qq|mingjingnews|inmediahk|xinsheng|breakgfw|chengmingmag|jinpianwang|qi-gong|mhradio|edoors|renminbao|soundofhope|xizang-zhiye|bannedbook|ntdtv|12321|secretchina|dajiyuan|boxun|chinadigitaltimes|dwnews|huaglad|oneplusnews|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
-            "(.*.||)(miaozhen|cnzz|talkingdata|umeng).(cn|com)",
-            "(.*.||)(mycard).(com|tw)",
-            "(.*.||)(gash).(com|tw)",
-            "(.bank.)",
-            "(.*.||)(pincong).(rocks)",
-            "(.*.||)(taobao).(com)",
-            "(.*.||)(laomoe|jiyou|ssss|lolicp|vv1234|0z|4321q|868123|ksweb|mm126).(com|cloud|fun|cn|gs|xyz|cc)",
-            "(flows|miaoko).(pages).(dev)"
-        ],
-        "outbound": "block"
-      },
-      {
-        "outbound": "direct",
-        "network": [
-          "udp","tcp"
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "outboundTag": "block",
+                "ip": [
+                    "geoip:private"
+                ]
+            },
+            {
+                "type": "field",
+                "outboundTag": "block",
+                "domain": [
+                    "regexp:(api|ps|sv|offnavi|newvector|ulog.imap|newloc)(.map|).(baidu|n.shifen).com",
+                    "regexp:(.+.|^)(360|so).(cn|com)",
+                    "regexp:(Subject|HELO|SMTP)",
+                    "regexp:(torrent|.torrent|peer_id=|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=)",
+                    "regexp:(^.@)(guerrillamail|guerrillamailblock|sharklasers|grr|pokemail|spam4|bccto|chacuo|027168).(info|biz|com|de|net|org|me|la)",
+                    "regexp:(.?)(xunlei|sandai|Thunder|XLLiveUD)(.)",
+                    "regexp:(..||)(dafahao|mingjinglive|botanwang|minghui|dongtaiwang|falunaz|epochtimes|ntdtv|falundafa|falungong|wujieliulan|zhengjian).(org|com|net)",
+                    "regexp:(ed2k|.torrent|peer_id=|announce|info_hash|get_peers|find_node|BitTorrent|announce_peer|announce.php?passkey=|magnet:|xunlei|sandai|Thunder|XLLiveUD|bt_key)",
+                    "regexp:(.+.|^)(360).(cn|com|net)",
+                    "regexp:(.*.||)(guanjia.qq.com|qqpcmgr|QQPCMGR)",
+                    "regexp:(.*.||)(rising|kingsoft|duba|xindubawukong|jinshanduba).(com|net|org)",
+                    "regexp:(.*.||)(netvigator|torproject).(com|cn|net|org)",
+                    "regexp:(..||)(visa|mycard|gash|beanfun|bank).",
+                    "regexp:(.*.||)(gov|12377|12315|talk.news.pts.org|creaders|zhuichaguoji|efcc.org|cyberpolice|aboluowang|tuidang|epochtimes|zhengjian|110.qq|mingjingnews|inmediahk|xinsheng|breakgfw|chengmingmag|jinpianwang|qi-gong|mhradio|edoors|renminbao|soundofhope|xizang-zhiye|bannedbook|ntdtv|12321|secretchina|dajiyuan|boxun|chinadigitaltimes|dwnews|huaglad|oneplusnews|epochweekly|cn.rfi).(cn|com|org|net|club|net|fr|tw|hk|eu|info|me)",
+                    "regexp:(.*.||)(miaozhen|cnzz|talkingdata|umeng).(cn|com)",
+                    "regexp:(.*.||)(mycard).(com|tw)",
+                    "regexp:(.*.||)(gash).(com|tw)",
+                    "regexp:(.bank.)",
+                    "regexp:(.*.||)(pincong).(rocks)",
+                    "regexp:(.*.||)(taobao).(com)",
+                    "regexp:(.*.||)(laomoe|jiyou|ssss|lolicp|vv1234|0z|4321q|868123|ksweb|mm126).(com|cloud|fun|cn|gs|xyz|cc)",
+                    "regexp:(flows|miaoko).(pages).(dev)"
+                ]
+            },
+            {
+                "type": "field",
+                "outboundTag": "block",
+                "ip": [
+                    "127.0.0.1/32",
+                    "10.0.0.0/8",
+                    "fc00::/7",
+                    "fe80::/10",
+                    "172.16.0.0/12"
+                ]
+            },
+            {
+                "type": "field",
+                "outboundTag": "block",
+                "protocol": [
+                    "bittorrent"
+                ]
+            }
         ]
-      }
-    ]
-  },
-  "experimental": {
-    "cache_file": {
-      "enabled": true
     }
-  }
-}
 EOF
 
     # 创建 hy2config.yaml 文件           
